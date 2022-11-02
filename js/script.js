@@ -8,7 +8,7 @@ progressBar = wrapper.querySelector(".progress-bar");
 const endPopup = document.getElementsByClassName("end-popup");
 const ipPopup = document.getElementsByClassName("ip-popup");
 const loader = document.getElementsByClassName("loader");
-const popupButton = document.getElementById("presave-button");
+const popupButton = document.getElementsByClassName("presave-button");
 
 $.getJSON("https://api.ipify.org?format=json", function(data) {    
     if(Cookies.get('ip') === data.ip){
@@ -47,7 +47,11 @@ playPauseBtn.addEventListener("click", ()=>{
     isMusicPaused ? pauseMusic() : playMusic();
 })
 
-popupButton.addEventListener("click", ()=>{
+popupButton[0].addEventListener("click", ()=>{
+    window.open('https://open.spotify.com/artist/3HAOBK4t6nqZN6zaUE8I9D', '_blank');
+})
+
+popupButton[1].addEventListener("click", ()=>{
     window.open('https://open.spotify.com/artist/3HAOBK4t6nqZN6zaUE8I9D', '_blank');
 })
 
