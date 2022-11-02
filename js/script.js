@@ -7,18 +7,23 @@ playPauseBtn = wrapper.querySelector(".play-pause"),
 progressBar = wrapper.querySelector(".progress-bar");
 const endPopup = document.getElementsByClassName("end-popup");
 const ipPopup = document.getElementsByClassName("ip-popup");
+const loader = document.getElementsByClassName("loader");
 const popupButton = document.getElementById("presave-button");
 
-$.getJSON("https://api.ipify.org?format=json", function(data) {
-    
-    if(document.cookie === data.ip) ipPopup[0].style.display = "block";
+$.getJSON("https://api.ipify.org?format=json", function(data) {    
+    if(document.cookie === data.ip){
+        ipPopup[0].style.display = "block";
+    }else{
+        wrapper.style.display = "inline";
+        loader[0].style.display = "none";
+    }
 });
 
 window.addEventListener("load", ()=>{
     musicName.innerText = "cubone";
     musicArtist.innerText = "Tafka";
     musicImg.src = './images/cubone.gif';
-    mainAudio.src = './audio/comeback.mp3';
+    mainAudio.src = './audio/comeback.mp3';    
 })
 
 function playMusic(){
@@ -78,4 +83,3 @@ if (mainAudio.ended){
     endPopup[0].style.display = "block";
 }   
 })
-
