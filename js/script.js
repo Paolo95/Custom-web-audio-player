@@ -11,7 +11,7 @@ const loader = document.getElementsByClassName("loader");
 const popupButton = document.getElementById("presave-button");
 
 $.getJSON("https://api.ipify.org?format=json", function(data) {    
-    if(document.cookie === data.ip){
+    if(Cookies.get('ip') === data.ip){
         ipPopup[0].style.display = "block";
         wrapper.style.display = "inline";
         loader[0].style.display = "none";
@@ -77,11 +77,11 @@ if(currentSec < 10){
 }
 musicCurrentTime.innerText = `${currentMin}:${currentSec}`;
 
-if (mainAudio.ended){
-    $.getJSON("https://api.ipify.org?format=json", function(data) {    
-    document.cookie = data.ip;
+if (currentSec > 30){
+    $.getJSON("https://api.ipify.org?format=json", function(data) {  
+    Cookies.set('ip', data.ip, { expires: 365 , path: '' }) 
     });
-    
-    endPopup[0].style.display = "block";
-}   
+    if (mainAudio.ended) endPopup[0].style.display = "block";
+}
+ 
 })
