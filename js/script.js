@@ -13,6 +13,8 @@ const popupButton = document.getElementById("presave-button");
 $.getJSON("https://api.ipify.org?format=json", function(data) {    
     if(document.cookie === data.ip){
         ipPopup[0].style.display = "block";
+        wrapper.style.display = "inline";
+        loader[0].style.display = "none";
     }else{
         wrapper.style.display = "inline";
         loader[0].style.display = "none";
