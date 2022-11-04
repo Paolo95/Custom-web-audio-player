@@ -5,10 +5,14 @@ musicArtist = wrapper.querySelector(".song-details .artist"),
 mainAudio = wrapper.querySelector("#main-audio"),
 playPauseBtn = wrapper.querySelector(".play-pause"),
 progressBar = wrapper.querySelector(".progress-bar");
+
 const endPopup = document.getElementsByClassName("end-popup");
 const ipPopup = document.getElementsByClassName("ip-popup");
 const loader = document.getElementsByClassName("loader");
 const popupButton = document.getElementsByClassName("presave-button");
+
+let isIPStored = false;
+
 
 $.getJSON("https://api.ipify.org?format=json", function(data) {    
     if(Cookies.get('ip') === data.ip){
@@ -25,7 +29,7 @@ window.addEventListener("load", ()=>{
     musicName.innerText = "cubone";
     musicArtist.innerText = "Tafka";
     musicImg.src = './images/cubone.gif';
-    mainAudio.src = './audio/comeback.mp3';    
+    mainAudio.src = './audio/cubone.mp3';
 })
 
 function playMusic(){
@@ -56,6 +60,7 @@ popupButton[1].addEventListener("click", ()=>{
 })
 
 mainAudio.addEventListener("timeupdate", (e)=>{
+
     const currentTime = e.target.currentTime;
     const duration = e.target.duration;
     let progressWidth = (currentTime / duration) * 100;
@@ -74,18 +79,35 @@ mainAudio.addEventListener("timeupdate", (e)=>{
         musicDuration.innerText = `${totalMin}:${totalSec}`;
     
     });
-let currentMin = Math.floor(currentTime / 60);
-let currentSec = Math.floor(currentTime % 60);
-if(currentSec < 10){
-    currentSec = `0${currentSec}`;
-}
-musicCurrentTime.innerText = `${currentMin}:${currentSec}`;
 
-if (currentSec > 30){
-    $.getJSON("https://api.ipify.org?format=json", function(data) {  
-    Cookies.set('ip', data.ip, { expires: 365 , path: '' }) 
-    });
-    if (mainAudio.ended) endPopup[0].style.display = "block";
-}
- 
-})
+    let currentMin = Math.floor(currentTime / 60);
+    let currentSec = Math.floor(currentTime % 60);
+    if(currentSec < 10){
+        currentSec = `0${currentSec}`;
+    }
+    musicCurrentTime.innerText = `${currentMin}:${currentSec}`;
+
+    if (currentSec > 29 && !isIPStored){
+        
+        if (typeof(Cookies.get('ip')) === 'undefined') {
+            
+            $.getJSON("https://api.ipify.org?format=json", function(data) {  
+            Cookies.set('ip', data.ip, { expires: 365 , path: '' }); 
+            });
+
+            isIPStored = true;
+
+        }      
+    
+    };
+
+    if (mainAudio.ended) {
+
+        endPopup[0].style.display = "block";
+        progressBar.style.width = '0%';
+        playPauseBtn.querySelector("i").innerText = "play_arrow";
+        musicCurrentTime.innerText = "0:00";
+
+    }
+
+});
