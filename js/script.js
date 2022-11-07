@@ -12,9 +12,24 @@ const loader = document.getElementsByClassName("loader");
 const popupButton = document.getElementsByClassName("presave-button");
 
 let isIPStored = false;
+let is64 = false;
 
+$.getJSON("https://api.ipify.org?format=json", function(data) { 
 
-$.getJSON("https://api.ipify.org?format=json", function(data) {    
+    if(typeof(data) === "object"){
+        is64 = true;
+        $.getJSON("https://api64.ipify.org?format=json", function(data64) {
+            if(Cookies.get('ip') === data64.ip){
+                ipPopup[0].style.display = "block";
+                wrapper.style.display = "inline";
+                loader[0].style.display = "none";
+            }else{
+                wrapper.style.display = "inline";
+                loader[0].style.display = "none";
+            }
+        })
+
+    }else{   
     if(Cookies.get('ip') === data.ip){
         ipPopup[0].style.display = "block";
         wrapper.style.display = "inline";
@@ -22,6 +37,7 @@ $.getJSON("https://api.ipify.org?format=json", function(data) {
     }else{
         wrapper.style.display = "inline";
         loader[0].style.display = "none";
+    }
     }
 });
 
@@ -88,15 +104,26 @@ mainAudio.addEventListener("timeupdate", (e)=>{
     musicCurrentTime.innerText = `${currentMin}:${currentSec}`;
 
     if (currentSec > 29 && !isIPStored){
-        
-        if (typeof(Cookies.get('ip')) === 'undefined') {
-            
-            $.getJSON("https://api.ipify.org?format=json", function(data) {  
-            Cookies.set('ip', data.ip, { expires: 365 , path: '' }); 
-            });
+        if (is64 === false){
+            if (typeof(Cookies.get('ip')) === 'undefined') {
+                
+                $.getJSON("https://api.ipify.org?format=json", function(data) {  
+                Cookies.set('ip', data.ip, { expires: 365 , path: '' }); 
+                });
 
-            isIPStored = true;
+                isIPStored = true;
 
+            }
+        }else{
+            if (typeof(Cookies.get('ip')) === 'undefined') {
+                
+                $.getJSON("https://api64.ipify.org?format=json", function(data) {  
+                Cookies.set('ip', data.ip, { expires: 365 , path: '' }); 
+                });
+
+                isIPStored = true;
+
+            }
         }      
     
     };
