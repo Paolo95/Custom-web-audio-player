@@ -14,12 +14,13 @@ const popupButton = document.getElementsByClassName("presave-button");
 let loop = false;
 
 do{
+    
     $.getJSON("https://api.ipify.org?format=json", function(data) {
-        if(Cookies.get('ip') === data.ip){
+        if((Cookies.get('ip') === data.ip) || (typeof(Cookies.get('ip')) === 'string')){
             ipPopup[0].style.display = "block";
             wrapper.style.display = "inline";
             loader[0].style.display = "none";
-        } if (Cookies.get('ip') === undefined){
+        }else if ((Cookies.get('ip') === undefined)){
             wrapper.style.display = "inline";
             loader[0].style.display = "none";
         }else{
