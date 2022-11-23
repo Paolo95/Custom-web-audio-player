@@ -33,7 +33,7 @@ do{
 window.addEventListener("load", ()=>{
     musicName.innerText = "cubone";
     musicArtist.innerText = "Tafka";
-    musicImg.src = './images/cubone.gif';
+    musicImg.src = './images/lavandonia.gif';
     mainAudio.src = './audio/cubone.mp3';
 })
 
